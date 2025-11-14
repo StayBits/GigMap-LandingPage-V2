@@ -10,12 +10,23 @@ const t = useTranslations(currentLang as keyof typeof languages);
 const options = [
   {
     body: "Android",
-    btn: `<a class="btn-s bg-(--primary) hover:bg-(--primary-95) text-(--text) cursor-pointer" href="https://github.com/StayBits/GigMap-mobile/releases/download/v0.1.0-sprint2/app-debug.apk">${t("descargarAhora")}</a>`,
+    btn: `
+    <div class="flex flex-col gap-4">
+      <a
+        class="shadow-sl btn-s bg-(--primary) hover:bg-(--primary-95) text-[hsl(0,0%,95%)] cursor-pointer"
+        href="https://github.com/StayBits/GigMap-mobile/releases/download/v0.1.0-sprint2/app-debug.apk"
+      >${t("paraFans")}</a>
+
+      <a
+        class="shadow-sl btn-s bg-(--primary) hover:bg-(--primary-95) text-[hsl(0,0%,95%)] cursor-pointer"
+        href="https://github.com/StayBits/GigMap-mobile-flutter/releases/download/v.0.1.0/app-release-flutter.apk"
+      >${t("paraArtistas")}</a>
+    </div>`,
     icon: "fa-brands fa-android",
   },
   {
     body: "Apple",
-    btn: `<a class="btn-s bg-(--bg-lighter) text-(--text)">${t("proximamente")}</a>`,
+    btn: `<a class="shadow-sl btn-s bg-(--bg-lighter) text-(--text)">${t("proximamente")}</a>`,
     icon: "fa-brands fa-apple",
   },
 ];
@@ -30,5 +41,4 @@ const options = [
     variant="DOWNLOAD"
   />
   <SectionDivider />
-  <a class="btn-s bg-(--bg-light) hover:bg-(--bg-lighter) text-(--text) cursor-pointer" href="https://github.com/StayBits/GigMap-mobile/releases/download/v1.0.0/app-debug.apk">{t("descargarAhora")}</a>
 </div>

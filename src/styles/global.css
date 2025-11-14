@@ -56,21 +56,21 @@ body {
 
 .btn-s {
   font: bold var(--big);
-  border-radius: 2rem;
+  border-radius: 10px;
   padding: 0.75rem 1.5rem;
   transition-property: all;
   transition-duration: 300ms;
 }
 .btn-l {
   font: var(--h4);
-  border-radius: 2rem;
+  border-radius: 10px;
   padding: 1rem 2rem;
   transition-property: all;
   transition-duration: 300ms;
 }
 .btn-sl {
   font: bold var(--big);
-  border-radius: 2rem;
+  border-radius: 10px;
   padding: 0.75rem 1.5rem;
   transition-property: all;
   transition-duration: 300ms;
@@ -86,7 +86,7 @@ body {
 @media (min-width: 768px) {
   .btn-sl {
     font: var(--h4);
-    border-radius: 2rem;
+    border-radius: 10px;
     padding: 1rem 2rem;
     transition-property: all;
     transition-duration: 300ms;

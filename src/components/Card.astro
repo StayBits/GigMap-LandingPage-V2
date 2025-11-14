@@ -33,7 +33,7 @@ const hasBtn = !!btn;
   }
   <div>
     <h4
-      class={`text-(--text) ${variant === "BENEFIT" ? "text-center" : ""} ${variant === "TESTIMONIAL" ? "mb-8" : "mb-2"}`}
+      class={`text-(--text) ${variant === "BENEFIT" && "text-center"} ${variant === "TESTIMONIAL" ? "mb-8" : "mb-2"}`}
       set:html={body}
     />
     {hasBtn && <div class="mt-10" set:html={btn} />}
