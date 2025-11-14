@@ -1,0 +1,38 @@
+---
+import type { languages } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import CardsContainer from "./CardsContainer.astro";
+import SectionDivider from "./SectionDivider.astro";
+
+const currentLang = Astro.currentLocale || "en";
+const t = useTranslations(currentLang as keyof typeof languages);
+
+const benefits = [
+  {
+    body: `${t("beneficioartista1_parte1")} ${t("beneficioartista1_resaltado")} ${t("beneficioartista1_parte2")}`,
+    icon: "fas fa-bell",
+  },
+  {
+    body: `${t("beneficioartista2_parte1")}<br>${t("beneficioartista2_parte2")}`,
+    icon: "fas fa-envelope",
+  },
+  {
+    body: `${t("beneficioartista3_parte1")}<br>${t("beneficioartista3_resaltado")} ${t("beneficioartista3_parte2")}`,
+    icon: "fas fa-user-friends",
+  },
+  {
+    body: `${t("beneficioartista4_parte1")}<br>${t("beneficioartista4_parte2")}`,
+    icon: "fas fa-map",
+  },
+];
+---
+
+<section class="pt-33">
+  <CardsContainer
+    cols={2}
+    cards={benefits}
+    title={`${t("titulo_beneficios_artista_parte1")} <span class="text-(--primary)">${t("titulo_beneficios_artista_resaltado")}</span> ${t("titulo_beneficios_artista_parte2")}`}
+    variant="BENEFIT"
+  />
+</section>
+<SectionDivider />

@@ -1,0 +1,129 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { languages } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeSwitcher from "./ThemeSwitcher.astro";
+
+const currentLang = Astro.currentLocale || "en";
+const t = useTranslations(currentLang as keyof typeof languages);
+
+const currentPath = Astro.url.pathname;
+
+const items = [
+  { label: "inicio" as const, to: "/" },
+  { label: "fans" as const, to: "/fans" },
+  { label: "artistas" as const, to: "/artists" },
+  { label: "demo" as const, to: "/demo" },
+];
+
+const isLinkActive = (itemTo: string) => {
+  if (itemTo === "/") {
+    const normalizedPath =
+      currentPath.endsWith("/") && currentPath.length > 1
+        ? currentPath.slice(0, -1)
+        : currentPath;
+    const baseLocalePath = getRelativeLocaleUrl(currentLang, "/");
+    const cleanCurrentPath = currentPath.endsWith("/")
+      ? currentPath.slice(0, -1)
+      : currentPath;
+    const cleanBaseLocalePath = baseLocalePath.endsWith("/")
+      ? baseLocalePath.slice(0, -1)
+      : baseLocalePath;
+
+    return cleanCurrentPath === cleanBaseLocalePath;
+  }
+
+  const fullLinkPath = getRelativeLocaleUrl(currentLang, itemTo);
+
+  return currentPath === fullLinkPath;
+};
+---
+
+<nav
+  class="fixed flex w-full justify-center p-2 bg-(--bg-dark) z-50 text-(--text) border-b border-b-(--bg-light) shadow-s"
+>
+  <div class="flex w-full items-center justify-between max-w-280">
+    <img src="/GigMap-LandingPage-V2/logo.webp" alt="GigMap Logo" class="w-14 h-14" />
+    <div class="flex items-center">
+      <ul
+        id="nav-menu"
+        class="absolute md:static top-[4.54rem] right-0 w-44 md:w-auto backdrop-blur-md flex flex-col md:flex-row md:items-center items-start transition-all duration-300 ease-in-out md:max-h-none opacity-0 md:opacity-100 max-h-0 overflow-hidden"
+      >
+        {
+          items.map((item) => (
+            <li class="py-2 md:py-0">
+              <a
+                href={getRelativeLocaleUrl(currentLang, item.to)}
+                class={`link mx-4 duration-300 ${
+                  isLinkActive(item.to)
+                    ? "text-(--primary)"
+                    : "hover:text-(--primary)"
+                }`}
+              >
+                {t(item.label)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mx-4 hidden md:block">|</div>
+      <div class="mx-4 flex items-center gap-4 md:gap-8">
+        <LanguageSwitcher />
+        <ThemeSwitcher />
+        <button id="menu-btn" class="md:hidden transition-all duration-300">
+          <svg
+            class="md:hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M4 6l16 0"></path>
+            <path d="M4 12l16 0"></path>
+            <path d="M4 18l16 0"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  #menu-btn svg {
+    transition: transform 0.3s ease;
+  }
+
+  #menu-btn.open svg {
+    transform: rotate(90deg);
+  }
+</style>
+
+<script>
+  const menuBtn = document.getElementById("menu-btn");
+  const navMenu = document.getElementById("nav-menu");
+  let open = false;
+
+  if (menuBtn && navMenu) {
+    menuBtn.addEventListener("click", () => {
+      open = !open;
+      menuBtn.classList.toggle("open", open);
+
+      if (open) {
+        menuBtn.classList.add("p-1", "bg-(--bg)", "rounded-full");
+        navMenu.classList.add("max-h-auto", "opacity-100");
+        navMenu.classList.remove("max-h-0", "overflow-hidden", "opacity-0");
+      } else {
+        menuBtn.classList.remove("p-1", "bg-(--bg)", "rounded-full");
+        navMenu.classList.add("max-h-0", "overflow-hidden", "opacity-0");
+        navMenu.classList.remove("max-h-auto", "opacity-100");
+      }
+    });
+  }
+</script>

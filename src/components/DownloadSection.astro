@@ -1,0 +1,34 @@
+---
+import { languages } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import CardsContainer from "./CardsContainer.astro";
+import SectionDivider from "./SectionDivider.astro";
+
+const currentLang = Astro.currentLocale || "en";
+const t = useTranslations(currentLang as keyof typeof languages);
+
+const options = [
+  {
+    body: "Android",
+    btn: `<a class="btn-s bg-(--primary) hover:bg-(--primary-95) text-(--text) cursor-pointer" href="https://github.com/StayBits/GigMap-mobile/releases/download/v1.0.0/app-debug.apk">${t("descargarAhora")}</a>`,
+    icon: "fa-brands fa-android",
+  },
+  {
+    body: "Apple",
+    btn: `<a class="btn-s bg-(--bg-lighter) text-(--text)">${t("proximamente")}</a>`,
+    icon: "fa-brands fa-apple",
+  },
+];
+---
+
+<div class="pt-18">
+  <CardsContainer
+    title={t("descargarAhora")}
+    subtitle={t("eligePlataforma")}
+    cards={options}
+    cols={2}
+    variant="DOWNLOAD"
+  />
+  <SectionDivider />
+  <a class="btn-s bg-(--bg-light) hover:bg-(--bg-lighter) text-(--text) cursor-pointer" href="https://github.com/StayBits/GigMap-mobile/releases/download/v1.0.0/app-debug.apk">{t("descargarAhora")}</a>
+</div>

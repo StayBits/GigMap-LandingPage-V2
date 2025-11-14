@@ -1,0 +1,191 @@
+---
+import type { languages } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import SectionTitle from "./SectionTitle.astro";
+import AccordionItem from "./AccordionItem.astro";
+import SectionDivider from "./SectionDivider.astro";
+
+const currentLang = Astro.currentLocale || "en";
+const t = useTranslations(currentLang as keyof typeof languages);
+
+const mockups = [
+  {
+    title: "Inicio",
+    description:
+      "Pantalla de bienvenida para iniciar sesión o crear una cuenta nueva",
+    image: "/GigMap-LandingPage-V2/mockup-inicio.png",
+  },
+  {
+    title: "Home",
+    description:
+      "Feed principal con nuevos conciertos, artistas destacados y posts recientes de tus comunidades",
+    image: `/GigMap-LandingPage-V2/mockup-home.png`,
+  },
+  {
+    title: "Descubrir Conciertos",
+    description:
+      "Explora eventos disponibles con filtros avanzados por género, fecha y ubicación",
+    image: `/GigMap-LandingPage-V2/mockup-descubrir.png`,
+  },
+  {
+    title: "Mapa Interactivo",
+    description:
+      "Visualiza eventos en tiempo real y descubre conciertos cerca de ti",
+    image: `/GigMap-LandingPage-V2/mockup-mapa.png`,
+  },
+  {
+    title: "Comunidades",
+    description:
+      "Únete a grupos musicales, comparte experiencias y descubre comunidades específicas",
+    image: `/GigMap-LandingPage-V2/mockup-comunidades.png`,
+  },
+  {
+    title: "Perfil",
+    description:
+      "Visualiza tus datos, conciertos con asistencia confirmada, comunidades unidas y posts con like",
+    image: `/GigMap-LandingPage-V2/mockup-perfil.png`,
+  },
+];
+---
+
+<section class="flex flex-col pt-33 px-5 sm:px-10 mb-15">
+  <SectionDivider />
+  <SectionTitle title={t("demoTitle")} subtitle={t("demoSubtitle")} />
+
+  <div
+    class="flex flex-col lg:flex-row gap-8 items-center justify-center max-w-7xl mx-auto w-full"
+  >
+    <div class="shrink-0 w-full lg:w-auto flex justify-center">
+      <div
+        class="relative w-72 h-[600px] overflow-hidden rounded-3xl shadow-2xl"
+      >
+        <img
+          id="mockup-image"
+          src={mockups[0].image}
+          alt={mockups[0].title}
+          class="w-full h-full object-cover transition-opacity duration-500"
+        />
+      </div>
+    </div>
+
+    <div class="flex-1 w-full max-w-2xl space-y-3">
+      {
+        mockups.map((mockup, index) => (
+          <AccordionItem
+            title={mockup.title}
+            description={mockup.description}
+            index={index}
+            isActive={index === 0}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+<SectionDivider />
+
+<script>
+  const mockups = [
+    {
+      title: "Inicio",
+      description:
+        "Pantalla de bienvenida para iniciar sesión o crear una cuenta nueva",
+      image: "/GigMap-LandingPage-V2/mockup-inicio.png",
+    },
+    {
+      title: "Home",
+      description:
+        "Feed principal con nuevos conciertos, artistas destacados y posts recientes de tus comunidades",
+      image: `/GigMap-LandingPage-V2/mockup-home.png`,
+    },
+    {
+      title: "Descubrir Conciertos",
+      description:
+        "Explora eventos disponibles con filtros avanzados por género, fecha y ubicación",
+      image: `/GigMap-LandingPage-V2/mockup-descubrir.png`,
+    },
+    {
+      title: "Mapa Interactivo",
+      description:
+        "Visualiza eventos en tiempo real y descubre conciertos cerca de ti",
+      image: `/GigMap-LandingPage-V2/mockup-mapa.png`,
+    },
+    {
+      title: "Comunidades",
+      description:
+        "Únete a grupos musicales, comparte experiencias y descubre comunidades específicas",
+      image: `/GigMap-LandingPage-V2/mockup-comunidades.png`,
+    },
+    {
+      title: "Perfil",
+      description:
+        "Visualiza tus datos, conciertos con asistencia confirmada, comunidades unidas y posts con like",
+      image: `/GigMap-LandingPage-V2/mockup-perfil.png`,
+    },
+  ];
+
+  const accordionItems = document.querySelectorAll(".accordion-item");
+  const mockupImage = document.getElementById(
+    "mockup-image"
+  ) as HTMLImageElement;
+  let currentActiveIndex = 0;
+  (accordionItems[0] as HTMLElement).classList.add(
+    "!bg-(--bg-light)",
+    "active"
+  );
+
+  accordionItems.forEach((item) => {
+    const button = item.querySelector("button") as HTMLButtonElement;
+    const content = item.querySelector(".accordion-content") as HTMLElement;
+    const arrow = item.querySelector(".arrow") as SVGElement;
+    const index = parseInt(item.getAttribute("data-index") || "0");
+
+    button.addEventListener("click", () => {
+      const isCurrentlyActive = button.getAttribute("aria-expanded") === "true";
+
+      if (isCurrentlyActive) return;
+
+      const currentActiveItem = accordionItems[currentActiveIndex];
+      const currentButton = currentActiveItem.querySelector(
+        "button"
+      ) as HTMLButtonElement;
+      const currentContent = currentActiveItem.querySelector(
+        ".accordion-content"
+      ) as HTMLElement;
+      const currentArrow = currentActiveItem.querySelector(
+        ".arrow"
+      ) as SVGElement;
+
+      currentContent.style.maxHeight = "0";
+      currentContent.style.opacity = "0";
+      currentButton.setAttribute("aria-expanded", "false");
+      currentArrow.style.transform = "rotate(0deg)";
+      (currentActiveItem as HTMLElement).classList.remove(
+        "!bg-(--bg-light)",
+        "active"
+      );
+
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.style.opacity = "1";
+      button.setAttribute("aria-expanded", "true");
+      arrow.style.transform = "rotate(180deg)";
+      (item as HTMLElement).classList.add("!bg-(--bg-light)", "active");
+
+      mockupImage.style.opacity = "0";
+
+      setTimeout(() => {
+        mockupImage.src = mockups[index].image;
+        mockupImage.alt = mockups[index].title;
+        mockupImage.style.opacity = "1";
+      }, 250);
+
+      currentActiveIndex = index;
+    });
+  });
+</script>
+
+<style>
+  #mockup-image {
+    transition: opacity 500ms ease-in-out;
+  }
+</style>

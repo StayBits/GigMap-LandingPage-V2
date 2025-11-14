@@ -1,0 +1,79 @@
+<button
+  id="theme-toggle"
+  class="relative w-14 h-7 bg-(--bg) rounded-full transition-all duration-300 shadow-m"
+  aria-label="Toggle theme"
+>
+  <div
+    id="toggle-indicator"
+    class="absolute top-1 left-1 w-5 h-5 bg-(--bg-light) shadow-l rounded-full transition-transform duration-300 flex items-center justify-center"
+  >
+    <svg
+      id="sun-icon"
+      class="w-3 h-3 text-(--text) transition-opacity duration-300 absolute"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+      ></path>
+    </svg>
+    <svg
+      id="moon-icon"
+      class="w-3 h-3 text-(--text) transition-opacity duration-300 absolute opacity-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+      ></path>
+    </svg>
+  </div>
+</button>
+
+<script>
+  const themeToggle = document.getElementById("theme-toggle");
+  const toggleIndicator = document.getElementById("toggle-indicator");
+  const sunIcon = document.getElementById("sun-icon");
+  const moonIcon = document.getElementById("moon-icon");
+  const html = document.documentElement;
+  const savedTheme = localStorage.getItem("theme") || "light";
+  const isLight = savedTheme === "light";
+
+  if (isLight) {
+    html.classList.add("light");
+    toggleIndicator!.style.transform = "translateX(0)";
+    sunIcon!.style.opacity = "1";
+    moonIcon!.style.opacity = "0";
+  } else {
+    html.classList.remove("light");
+    toggleIndicator!.style.transform = "translateX(1.75rem)";
+    sunIcon!.style.opacity = "0";
+    moonIcon!.style.opacity = "1";
+  }
+
+  themeToggle?.addEventListener("click", () => {
+    const isCurrentlyLight = html.classList.contains("light");
+
+    if (isCurrentlyLight) {
+      html.classList.remove("light");
+      toggleIndicator!.style.transform = "translateX(1.75rem)";
+      sunIcon!.style.opacity = "0";
+      moonIcon!.style.opacity = "1";
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.classList.add("light");
+      toggleIndicator!.style.transform = "translateX(0)";
+      sunIcon!.style.opacity = "1";
+      moonIcon!.style.opacity = "0";
+      localStorage.setItem("theme", "light");
+    }
+  });
+</script>

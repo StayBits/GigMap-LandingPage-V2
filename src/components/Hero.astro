@@ -1,0 +1,156 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { languages } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import CardsContainer from "./CardsContainer.astro";
+import VideoContainer from "./VideoContainer.astro";
+
+const currentLang = Astro.currentLocale || "en";
+const t = useTranslations(currentLang as keyof typeof languages);
+
+const concerts = [
+  {
+    body: "Maldito Antisocial",
+    img: "https://cdn.myportfolio.com/652b25c3-c66e-4abb-a7c1-36ca2ad2ad92/e4dc6579-20de-40ed-88c0-9816e26304df_rw_1920.jpg?h=29697d3c2c0b321ee7007ceae245effd",
+    footer: "Explanada Agua Dulce<br>17 de Octubre 2025",
+  },
+  {
+    body: "Big Time Rush",
+    img: "https://www.sportovnihalafortuna.cz/data/a/a/btr-1920x600-002-.jpg",
+    footer: "Costa 21<br>27 de Febrero 2026",
+  },
+  {
+    body: "Cometa a la deriva",
+    img: "https://tercerparlante.com/wp-content/uploads/2025/01/Cometa-a-la-Deriva-Peru-2025-0001.jpg",
+    footer: "Parque Washington<br>11 de Octubre 2025",
+  },
+  {
+    body: "Dua Lipa",
+    img: "https://images.hdqwalls.com/wallpapers/2019-dua-lipa-c0.jpg",
+    footer: "Estadio San Marcos<br>25 de Noviembre 2025",
+  },
+  {
+    body: "Bad Bunny",
+    img: "https://media.pitchfork.com/photos/682b43f9d6a2575d172e91a4/16:9/w_1280,c_limit/Bad-Bunny-Debi-Tirar-Mas-Fotos.jpeg",
+    footer: "Estadio Nacional<br>30 de Enero 2025",
+  },
+  {
+    body: "Doja Cat",
+    img: "https://4kwallpapers.com/images/wallpapers/doja-cat-american-3840x2160-9919.jpg",
+    footer: "Arena 1<br>13 de Febrero 2026",
+  },
+];
+
+const testimonials = [
+  {
+    img: "https://raw.githubusercontent.com/The-Rumbling-AW/LandingV2/refs/heads/main/stay.jpg",
+    body: t("testuno"),
+    footer: t("testunoby"),
+  },
+  {
+    img: "https://raw.githubusercontent.com/The-Rumbling-AW/LandingV2/refs/heads/main/harry.jpg",
+    body: t("testdos"),
+    footer: t("testdosby"),
+  },
+  {
+    img: "https://raw.githubusercontent.com/The-Rumbling-AW/LandingV2/refs/heads/main/louis.jpg",
+    body: t("testtres"),
+    footer: t("testtresby"),
+  },
+];
+---
+
+<div class="pt-18">
+  <div class="carousel-container mb-15">
+    <div class="carousel-wrapper" id="carousel-wrapper">
+      {
+        concerts.map((concert, index) => (
+          <div class="carousel-slide" data-index={index}>
+            <img src={concert.img} alt={concert.body} class="carousel-image" />
+            <div
+              class="px-10 pb-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+            text-center text-white z-20 w-full max-w-[1200px]"
+            >
+              <p class="title mb-8 md:mb-16">{t("heroSubtitle")}</p>
+              <a
+                class="btn-sl bg-[hsl(0,0%,95%)] hover:bg-[hsl(0,0%,85%)] text-[hsl(0,0%,5%)]"
+                href={getRelativeLocaleUrl(currentLang, "/download")}
+              >
+                {t("ingresar")}
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="carousel-dots" id="carousel-dots">
+      {concerts.map((_, index) => <span class="dot" data-index={index} />)}
+    </div>
+  </div>
+
+  <CardsContainer cards={concerts} title={t("conoce")} />
+  <CardsContainer
+    cards={testimonials}
+    title={t("Testimonios")}
+    variant="TESTIMONIAL"
+  />
+  <VideoContainer
+    title={t("abouttheteam")}
+    videoSrc="https://www.youtube.com/embed/Fa3EgjYHyow"
+    body={t("abouttheteamdesc")}
+    reverted={true}
+  />
+  <VideoContainer
+    title={t("abouttheproduct")}
+    videoSrc="https://www.youtube.com/embed/Fa3EgjYHyow"
+    body={t("abouttheproductdesc")}
+  />
+  <div class="email-signup-section py-15 px-5 sm:px-10">
+    <div class="signup-circles">
+      {[1, 2, 3, 4].map((n) => <div class={`circle circle-${n}`} />)}
+    </div>
+    <div class="email-signup-content">
+      <h2 class="mb-4">{t("footer")}</h2>
+      <p class="big mb-8 md:16 text-[hsl(0,0%,70%)]">{t("footerdos")}</p>
+      <form class="signup-form gap-8" onsubmit="event.preventDefault();">
+        <input
+          class="p-4"
+          type="email"
+          placeholder={t("footercorreo")}
+          required
+        />
+        <button class="p-bold" type="submit">{t("footerboton")}</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll<HTMLDivElement>(".carousel-slide");
+  const dots = document.querySelectorAll<HTMLSpanElement>(".dot");
+  let current = 0;
+
+  function showSlide(index: number) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === index);
+    });
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+      current = i;
+      showSlide(current);
+    });
+  });
+
+  setInterval(() => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }, 5000);
+
+  showSlide(0);
+</script>

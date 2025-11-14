@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  index: number;
+  isActive?: boolean;
+}
+
+const { title, description, index, isActive = false } = Astro.props;
+---
+
+<div
+  class="accordion-item w-full py-4 px-8 bg-(--bg) hover:bg-(--bg-light) rounded-3xl shadow-sl overflow-hidden transition-all duration-300"
+  data-index={index}
+>
+  <button
+    class="w-full text-left cursor-pointer text-lg font-semibold text-(--text) flex items-center justify-between"
+    aria-expanded={isActive ? "true" : "false"}
+  >
+    <h4 class="text-base sm:text-lg">{title}</h4>
+    <svg
+      class="w-5 h-5 transition-transform duration-300 arrow"
+      class:list={[isActive && "rotate-180"]}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+
+  <div
+    class="accordion-content overflow-hidden transition-all duration-300 ease-in-out"
+    style={isActive
+      ? `max-height: 200px; opacity: 1;`
+      : `max-height: 0; opacity: 0;`}
+  >
+    <p class="mt-2 py-2 text-(--text-muted)">
+      {description}
+    </p>
+  </div>
+</div>

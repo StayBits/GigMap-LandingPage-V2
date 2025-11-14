@@ -1,0 +1,30 @@
+---
+import SectionDivider from "./SectionDivider.astro";
+import SectionTitle from "./SectionTitle.astro";
+
+const { videoSrc, title, body, reverted = false } = Astro.props;
+---
+
+<SectionDivider />
+<section class="px-5">
+  <SectionTitle title={title} />
+  <div
+    class={`video-section flex flex-col items-center justify-center gap-7.5 ${
+      reverted ? "xl:flex-row" : "xl:flex-row-reverse"
+    }`}
+  >
+    <div class="video-media w-full xl:w-1/2">
+      <iframe
+        src={videoSrc}
+        class="w-full aspect-video rounded-xl shadow-lg"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+
+    <div
+      class=`bg-(--bg) w-full xl:w-1/2 text-center xl:text-left p-8 rounded-3xl shadow-s overflow-hidden`
+    >
+      <h4 class="text-(--text)" set:html={body} />
+    </div>
+  </div>
+</section>
